@@ -6,12 +6,12 @@
 </template>
 
 <script>
-// import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld_ref.vue' // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld_reactive.vue' // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld_computed.vue' // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld_emit.vue' // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld_lifecycle.vue' // @ is an alias to /src
+// import HelloWorld from '@/components/HelloWorld_lifecycle.vue' // @ is an alias to /src
 
 export default {
   name: 'Home',
