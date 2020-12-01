@@ -27,4 +27,9 @@
     }
   }
 }
+
+.toast-wrap {
+  text-align: center;
+  color: #17a2b8;
+}
 </style>
