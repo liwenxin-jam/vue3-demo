@@ -12,15 +12,18 @@
 </template>
 
 <script>
-import { reactive, computed } from 'vue'
+import { reactive, computed, toRefs } from 'vue'
 
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
+  // 注意第一个参数不允许解构，第二个可以，因为 props 是响应式的，你不能使用 ES6 解构，因为它会消除 prop 的响应性
   // setup (props, ctx) {
   setup (props, { emit }) {
+    // 如果需要解构 prop，可以通过使用 setup 函数中的 toRefs 来完成此操作
+    // const { title } = toRefs(props)
     console.log('setup -> props', props)
     const state = reactive({
       num1: 0,

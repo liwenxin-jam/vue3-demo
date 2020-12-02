@@ -18,6 +18,7 @@ export default {
   },
   setup () {
     const num1 = ref(0)
+    // 支持泛型T
     const num2 = ref(0)
     const result = ref(0)
 
