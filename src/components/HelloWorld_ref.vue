@@ -5,11 +5,13 @@
     <input type="text" v-model="num2" @keyup="add()">
     <span>=</span>
     {{result}}
+    <p>{{objInfo}}</p>
+    <button @click="myFn">按钮</button>
   </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script lang="ts">
+import { ref, toRaw } from 'vue'
 
 export default {
   name: 'HelloWorld',
@@ -22,14 +24,33 @@ export default {
     const num2 = ref<string | number>(0)
     const result = ref(0)
 
+    const obj = { name: 'xx', info: { desc: 'handsome boy' } }
+    const objInfo = ref(obj)
+    // 响应式对象转普通对象，使用场景操作频繁不需要实时刷新界面
+    // const obj2 = toRaw(objInfo)
+    const obj2 = toRaw(objInfo.value)
+    console.log(obj === obj2)
+
     function add () {
-      result.value = parseInt(num1.value) + parseInt(num2.value)
+      result.value = parseInt(num1.value.toString()) + parseInt(num2.value.toString())
     }
+
+    function myFn() {
+      // obj.name = 'jam'
+      // console.log(obj)
+      // console.log(objInfo.value)
+      objInfo.value.name = 'hello world'
+      objInfo.value.info.desc = 'thanks'
+    }
+
     return {
       num1,
       num2,
       result,
-      add
+      add,
+      obj,
+      objInfo,
+      myFn
     }
   }
 }

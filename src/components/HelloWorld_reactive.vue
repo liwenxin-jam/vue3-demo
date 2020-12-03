@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, shallowReactive, shallowRef, triggerRef, toRaw, markRaw } from 'vue'
 
 export default {
   name: 'HelloWorld',
@@ -30,6 +30,14 @@ export default {
     })
     // const state = reactive(123)
 
+    const obj = { name: 'xx', info: { desc: 'handsome boy' } }
+    // 添加不可转为响应式数据的标记
+    // obj = markRaw(obj) // 类似Object.freeze() 冻结一个对象
+    const objInfo = reactive(obj)
+    // 响应式对象转普通对象，使用场景操作频繁不需要实时刷新界面
+    const obj2 = toRaw(objInfo)
+    console.log(obj === obj2)
+
     function add () {
       state.result = parseInt(state.num1) + parseInt(state.num2)
     }
@@ -44,9 +52,13 @@ export default {
       console.log(state.time)
     }
 
-    // ref与reactive区别
-    let age1 = ref(18)
-    let age2 = reactive({ value: 18 })
+    // ref与reactive 相同点是都是递归监听，但两者并不等价
+    // 弊端，数量量大会影响性能，每一个对象都是proxy
+    // shallowReactive shallowRef 注意点 shallowReactive监听第一层 shallowRef 监听的是.value非第一层
+    const age1 = ref(18)
+    const age2 = reactive({ value: 18 })
+    // const state = shallowRef({ a: 'a', b: { c: 'c' } })
+    // triggerRef(state) // 类似vue2的$set
 
     return {
       state,

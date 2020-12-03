@@ -84,11 +84,12 @@ export default {
     onRenderTriggered(() => {
       console.log('onRenderTriggered!')
     })
-    const { num1, num2, result } = useAdd()
+    const { num1, num2, result, state } = useAdd()
     return {
       num1,
       num2,
-      result
+      result,
+      state
     }
   },
   mounted() {

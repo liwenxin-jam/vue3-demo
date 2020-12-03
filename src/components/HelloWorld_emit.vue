@@ -5,6 +5,7 @@
     <input type="text" v-model="state.num2">
     <span>=</span>
     {{state.result}}
+    <p>{{copy}}</p>
     <button type="button" @click="clickEvent()">emit event</button>
   </div>
   <!-- 允许多个根节点 -->
@@ -12,7 +13,7 @@
 </template>
 
 <script>
-import { reactive, computed, toRefs } from 'vue'
+import { reactive, computed, ref, toRef, toRefs } from 'vue'
 
 export default {
   name: 'HelloWorld',
@@ -25,6 +26,16 @@ export default {
     // 如果需要解构 prop，可以通过使用 setup 函数中的 toRefs 来完成此操作
     // const { title } = toRefs(props)
     console.log('setup -> props', props)
+
+    const obj = { name: 'xx', age: 18 }
+    const copy = ref(obj.name)
+    // const age = ref(obj.age)
+    // const copy = toRefs(obj)
+    // 将某个对象中的属性变成响应式数据，修改响应式数据是会影响到原始数据的。但是需要注意，如果修改通过toRef创建的响应式数据，并不会触发UI界面的更新。
+    // ref和toRef区别 ref是复制 toRef的本质是引用，与原始数据有关联
+    // const copy = toRef(obj, 'name')
+    console.log(copy)
+
     const state = reactive({
       num1: 0,
       num2: 0,
@@ -33,6 +44,9 @@ export default {
     })
 
     const clickEvent = () => {
+      copy.value = 'jam'
+      console.log(obj)
+      console.log(copy)
       // this.$emit('', payload)
       console.log('click')
       // ctx.$emit('send-msg', state.result)
@@ -41,7 +55,8 @@ export default {
 
     return {
       state,
-      clickEvent
+      clickEvent,
+      copy
     }
   }
 }
