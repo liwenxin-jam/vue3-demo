@@ -85,6 +85,10 @@ export default {
       console.log('onRenderTriggered!')
     })
     const { num1, num2, result, state } = useAdd()
+    // const { state } = useAdd()
+    // const { num1, num2, result } = state
+    // const { num1, num2, result } = toRefs(state)
+
     return {
       num1,
       num2,

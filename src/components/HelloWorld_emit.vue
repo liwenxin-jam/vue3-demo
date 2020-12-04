@@ -5,7 +5,9 @@
     <input type="text" v-model="state.num2">
     <span>=</span>
     {{state.result}}
-    <p>{{copy}}</p>
+    <p>copy:{{copy}}</p>
+    <p>refNum:{{refNum}}</p>
+    <!-- <p>copyRefNum:{{copyRefNum}}</p> -->
     <button type="button" @click="clickEvent()">emit event</button>
   </div>
   <!-- 允许多个根节点 -->
@@ -24,17 +26,20 @@ export default {
   // setup (props, ctx) {
   setup (props, { emit }) {
     // 如果需要解构 prop，可以通过使用 setup 函数中的 toRefs 来完成此操作
-    // const { title } = toRefs(props)
+    // const { title } = toRefs(props) // 可以理解为类似 展开运算符 { ...props }
     console.log('setup -> props', props)
 
     const obj = { name: 'xx', age: 18 }
-    const copy = ref(obj.name)
+    // const copy = ref(obj.name)
     // const age = ref(obj.age)
     // const copy = toRefs(obj)
     // 将某个对象中的属性变成响应式数据，修改响应式数据是会影响到原始数据的。但是需要注意，如果修改通过toRef创建的响应式数据，并不会触发UI界面的更新。
     // ref和toRef区别 ref是复制 toRef的本质是引用，与原始数据有关联
-    // const copy = toRef(obj, 'name')
+    const copy = toRef(obj, 'name')
     console.log(copy)
+
+    const refNum = ref(0)
+    const copyRefNum = toRef(refNum, 'value')
 
     const state = reactive({
       num1: 0,
@@ -44,9 +49,16 @@ export default {
     })
 
     const clickEvent = () => {
+      // obj.name = 'jam'
       copy.value = 'jam'
       console.log(obj)
       console.log(copy)
+
+      // refNum.value = 123
+      // copyRefNum.value = 123
+      // console.log(refNum)
+      // console.log(copyRefNum)
+
       // this.$emit('', payload)
       console.log('click')
       // ctx.$emit('send-msg', state.result)
@@ -56,7 +68,9 @@ export default {
     return {
       state,
       clickEvent,
-      copy
+      copy,
+      refNum,
+      copyRefNum
     }
   }
 }

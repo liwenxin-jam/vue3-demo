@@ -20,7 +20,7 @@ export default {
   },
   setup () {
     // 创建一个响应式数据，参数是对象或者数组，数组会转为key val的形式存在，key是下标
-    // 本质：就是将传入的数据包装成一个 Proxyc 对象，vue2使用的 Object.defineProperty 实现
+    // 本质：就是将传入的数据包装成一个 Proxy 对象，vue2使用的 Object.defineProperty 实现
     const state = reactive({
       num1: 0,
       num2: 0,
@@ -34,7 +34,7 @@ export default {
     // 添加不可转为响应式数据的标记
     // obj = markRaw(obj) // 类似Object.freeze() 冻结一个对象
     const objInfo = reactive(obj)
-    // 响应式对象转普通对象，使用场景操作频繁不需要实时刷新界面
+    // 响应式对象转普通对象，使用场景操作频繁不需要实时刷新界面，可用于临时读取，访问不会被代理/跟踪，写入时也不会触发更改。不建议一直持有原始对象的引用。请谨慎使用。
     const obj2 = toRaw(objInfo)
     console.log(obj === obj2)
 
@@ -57,6 +57,7 @@ export default {
     // shallowReactive shallowRef 注意点 shallowReactive监听第一层 shallowRef 监听的是.value非第一层
     const age1 = ref(18)
     const age2 = reactive({ value: 18 })
+    // const state = shallowReactive({ a: 'a', b: { c: 'c' } })
     // const state = shallowRef({ a: 'a', b: { c: 'c' } })
     // triggerRef(state) // 类似vue2的$set
 
