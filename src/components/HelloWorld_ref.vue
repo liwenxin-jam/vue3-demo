@@ -1,24 +1,24 @@
 <template>
   <div class="hello">
-    <input type="text" v-model="num1" @keyup="add()">
+    <input type="text" v-model="num1" @keyup="add()" />
     <span>+</span>
-    <input type="text" v-model="num2" @keyup="add()">
+    <input type="text" v-model="num2" @keyup="add()" />
     <span>=</span>
-    {{result}}
-    <p>{{objInfo}}</p>
+    {{ result }}
+    <p ref="refP">{{ objInfo }}</p>
     <button @click="myFn">按钮</button>
   </div>
 </template>
 
 <script lang="ts">
-import { ref, toRaw } from 'vue'
+import { ref, toRaw, onMounted } from 'vue'
 
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
-  setup () {
+  setup() {
     const num1 = ref(0)
     // 支持泛型T，本质上还是reactive ref(xx) => reactive({value: xx})
     const num2 = ref<string | number>(0)
@@ -31,8 +31,9 @@ export default {
     const obj2 = toRaw(objInfo.value)
     console.log(obj === obj2)
 
-    function add () {
-      result.value = parseInt(num1.value.toString()) + parseInt(num2.value.toString())
+    function add() {
+      result.value =
+        parseInt(num1.value.toString()) + parseInt(num2.value.toString())
     }
 
     function myFn() {
@@ -43,6 +44,12 @@ export default {
       objInfo.value.info.desc = 'thanks'
     }
 
+    // let refP = this.$refs.refp
+    const refP = ref(null)
+    onMounted(() => {
+      console.log('onMounted', refP.value)
+    })
+
     return {
       num1,
       num2,
@@ -50,7 +57,8 @@ export default {
       add,
       obj,
       objInfo,
-      myFn
+      myFn,
+      refP
     }
   }
 }

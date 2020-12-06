@@ -1,24 +1,32 @@
 <template>
   <div class="hello">
-    <input type="text" v-model="state.num1" @keyup="add()">
+    <input type="text" v-model="state.num1" @keyup="add()" />
     <span>+</span>
-    <input type="text" v-model="state.num2" @keyup="add()">
+    <input type="text" v-model="state.num2" @keyup="add()" />
     <span>=</span>
-    {{state.result}}
-    <p>{{state.time}}</p>
+    {{ state.result }}
+    <p>{{ state.time }}</p>
     <button @click="myFn">按钮</button>
   </div>
 </template>
 
 <script>
-import { ref, reactive, shallowReactive, shallowRef, triggerRef, toRaw, markRaw } from 'vue'
+import {
+  ref,
+  reactive,
+  shallowReactive,
+  shallowRef,
+  triggerRef,
+  toRaw,
+  markRaw
+} from 'vue'
 
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
   },
-  setup () {
+  setup() {
     // 创建一个响应式数据，参数是对象或者数组，数组会转为key val的形式存在，key是下标
     // 本质：就是将传入的数据包装成一个 Proxy 对象，vue2使用的 Object.defineProperty 实现
     const state = reactive({
@@ -33,12 +41,14 @@ export default {
     const obj = { name: 'xx', info: { desc: 'handsome boy' } }
     // 添加不可转为响应式数据的标记
     // obj = markRaw(obj) // 类似Object.freeze() 冻结一个对象
+    // readonly 创建一个递归只读 shallowReadonly 非递归只读 isReadonly  isRef isReactvie
+    // const和readonly区别，const赋值保护，不能给变量变量重新赋值 readonly属性保护，不能给属性重新赋值
     const objInfo = reactive(obj)
     // 响应式对象转普通对象，使用场景操作频繁不需要实时刷新界面，可用于临时读取，访问不会被代理/跟踪，写入时也不会触发更改。不建议一直持有原始对象的引用。请谨慎使用。
     const obj2 = toRaw(objInfo)
     console.log(obj === obj2)
 
-    function add () {
+    function add() {
       state.result = parseInt(state.num1) + parseInt(state.num2)
     }
 
@@ -46,10 +56,10 @@ export default {
       // 直接修改以前的，界面不会更新
       // state.time.setDate(state.time.getDate() + 1)
       // 重新赋值
-      const newTime = new Date(state.time.getTime())
-      newTime.setDate(state.time.getDate() + 1)
-      state.time = newTime
-      console.log(state.time)
+      // const newTime = new Date(state.time.getTime())
+      // newTime.setDate(state.time.getDate() + 1)
+      // state.time = newTime
+      // console.log(state.time)
     }
 
     // ref与reactive 相同点是都是递归监听，但两者并不等价
@@ -61,10 +71,13 @@ export default {
     // const state = shallowRef({ a: 'a', b: { c: 'c' } })
     // triggerRef(state) // 类似vue2的$set
 
+    // customRef 接收一个回调函数(track, trigger)，返回一个ref对象，可以显示地控制依赖追踪和触发响应
+
     return {
       state,
       add,
-      myFn
+      myFn,
+      obj
     }
   }
 }
